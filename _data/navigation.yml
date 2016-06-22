@@ -1,0 +1,7 @@
+# main links links
+main:
+  - title: "التصنيفات"
+    url: http://localhost:4000/categories
+  - title: "حول المدونة"
+    url: http://localhost:4000/about
+
