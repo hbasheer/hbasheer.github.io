@@ -11,7 +11,7 @@ title                    : "HBasheer"
 title_separator          : "-"
 name                     : "Hasan Basheer"
 description              : "مدونة شخصية"
-url                      : https://hbasheer.github.io
+url                      : http://hbasheer.com/
 baseurl                  : # the subpath of your site, e.g. "/blog"
 gh_repo                  :
 teaser                   : # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
