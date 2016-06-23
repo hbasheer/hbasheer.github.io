@@ -7,7 +7,7 @@ header:
   overlay_filter: "0.4"
   overlay_image: nature-grain.jpg
 tags: devise
-category: rails
+category: Rails
 date: 2016-04-05T01:20:44+03:00
 ---
 

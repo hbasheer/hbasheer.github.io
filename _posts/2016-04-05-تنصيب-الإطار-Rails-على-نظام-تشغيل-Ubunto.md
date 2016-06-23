@@ -7,7 +7,7 @@ header:
   overlay_filter: "0.4"
   overlay_image: nature-grain.jpg
 tags: Ubunto
-category: rails
+category: Rails
 date: 2016-04-05T00:47:26+03:00
 ---
 

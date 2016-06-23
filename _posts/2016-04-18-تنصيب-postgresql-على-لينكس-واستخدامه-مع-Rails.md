@@ -7,7 +7,7 @@ header:
   overlay_filter: "0.4"
   overlay_image: nature-grain.jpg
 tags: postgresql
-category: rails
+category: DataBase
 date: 2016-04-18T03:08:22+03:00
 ---
 

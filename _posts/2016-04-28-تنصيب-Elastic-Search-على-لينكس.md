@@ -8,7 +8,7 @@ header:
   overlay_filter: "0.4"
   overlay_image: nature-grain.jpg
 tags: Elasticsearch
-category: rails
+category: Rails
 ---
 
  
