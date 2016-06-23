@@ -12,7 +12,7 @@ category: Rails
 ---
 
  
-#### 1- تنصيب جافا
+### 1- تنصيب جافا
 elastic search مكتوب بلغة جافا لذا وجود تنصيب بيئة عمل جافا ضمن النظام
 
 ~~~
@@ -22,7 +22,7 @@ sudo apt-get install oracle-java8-installer
 java -version
 ~~~
 
-#### 2- تنصيب elastic search
+### 2- تنصيب elastic search
 
 * إضافة Public Signing Key
 
