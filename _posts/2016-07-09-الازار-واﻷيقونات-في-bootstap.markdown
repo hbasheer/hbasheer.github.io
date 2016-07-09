@@ -17,12 +17,13 @@ category: CSS
 <a href="#" class="btn">link</a>
 ~~~
 
-#### اشكال الأزار  Button Styles
+### اشكال الأزار  Button Styles
 
 
 يحتوي الإطار على 7 أشكال مختلفة للأزار كما توضح الصورة التالية
 
 ![ ](http://www.hub4tech.com/sites/default/files/tutorial/bootstrap/bootstrap-ch6-img1.png  "button style")
+
   يمكن الحصول عليها بإضافة الأصناف التالية:
 `btn-default`, `.btn-primary`,` .btn-success`, `.btn-info`,` .btn-warning`, `.btn-danger`, `.btn-link`
 
@@ -35,10 +36,12 @@ category: CSS
 < button type="button" class="btn btn-danger">Danger< /button>
 < button type="button" class="btn btn-link">Link< /button>
 ~~~ 
-#### أحجام الأزار 
+
+### أحجام الأزار 
 يوفر الإطار ايضا 4 أحجام مختلفة للأزار كما توضح الصورة التالية
 
 ![ ](http://www.hub4tech.com/sites/default/files/tutorial/bootstrap/bootstrap-ch6-img2.png  "button size")
+
   يمكن الحصول عليها بإضافة الأصناف التالية:
 `btn-lg`,`btn-md`,`btn-sm`,`btn-xs`
 
@@ -51,7 +54,7 @@ category: CSS
 
 > في حال لم يتم استخدام صنف الحجم يكون الحجم المتوسط `btn-sm` هو الافتراضي
 
-#### Block Level Buttons
+### Block Level Buttons
 من خلال صنف  `btn-block` يمكن جعل الزر يأخذ عرض الصفحة كاملة أو عرض الكامل للعنصر الأب من النظام الشبكي الذي يوجد به
 
 ![ ](http://www.hub4tech.com/sites/default/files/tutorial/bootstrap/bootstrap-ch6-img3.png  "button block")
@@ -61,11 +64,12 @@ category: CSS
 < button type="button" class="btn btn-default btn-block" >Button 2< /button>
 ~~~
 
-#### تجميع الأزار
+### تجميع الأزار
 من خلال الصنف `btn-group` يمكن إنشاء مجموعة من الأزار وجعلها ضمن صف واحد
 
 
 ![](http://hbasheer.com/images/btn-group.png  "btn-group") 
+
 
 ~~~html
 <div class="btn-group ">
@@ -84,13 +88,14 @@ category: CSS
 </div>
 ~~~
 
-#### الأيقونات 
+### الأيقونات 
 تستخدم الأيقونات مع الوسم `<span>` من خلال إضافة صنفين :
 الأول هو `glyphicon` لتهئية العنصر لاستقبال الأيقونة
 الثاني هو `glyphicon-*` وهو اسم الأيقونة
 
 يمكن ايضا استخدام الايقونات داخل الأزار كما هو موضح بالشيفرة السابقة
-#### تفعيل/تعطيل الأزار
+
+### تفعيل/تعطيل الأزار
 يمكن جعل الزر مفعل قابل للضغط وهي الحالة الافتراضية ويمكن جعله غير قابل للضغط من خلال إضافة الصنف `disabled`
 
 ![](http://www.hub4tech.com/sites/default/files/tutorial/bootstrap/bootstrap-ch6-img4.png) 
