@@ -7,7 +7,7 @@ header:
   overlay_filter: "0.4"
   overlay_image: nature-grain.jpg
 tags: sitemap
-category: Rails
+category: SEO
 date: 2016-04-05T01:56:14+03:00
 ---
 
