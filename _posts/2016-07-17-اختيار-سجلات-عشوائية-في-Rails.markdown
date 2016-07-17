@@ -1,0 +1,26 @@
+---
+title: اختيار سجلات عشوائية في Rails
+date: 2016-07-17T17:58:29+03:00
+layout: single
+author_profile: true
+header:
+  overlay_color: "#000"
+  overlay_filter: "0.4"
+  overlay_image: nature-grain.jpg
+tags: Random Record
+category: Rails
+---
+
+### اختيار سجل واحد
+
+~~~ruby
+User.offset(randUser.count)).first
+~~~
+
+### اختيار عدة سجلات 
+
+~~~ruby
+ids = User.pluck(:id).sample(5)
+@users = User.find ids
+~~~
+
