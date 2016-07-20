@@ -14,7 +14,7 @@ category: Rails
 ### اختيار سجل واحد
 
 ~~~ruby
-User.offset(randUser.count)).first
+User.offset(rand(User.count)).first
 ~~~
 
 ### اختيار عدة سجلات 
