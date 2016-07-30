@@ -11,7 +11,6 @@ tags: Validation
 category: Rails
 ---
 
-
 ~~~ruby
 class SomeClass < ActiveRecord::Base
 
