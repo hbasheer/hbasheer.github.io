@@ -17,7 +17,9 @@ category: Rails
 rails g model contact --migration=false 
 ~~~
 الخيار `--migration=false ` تم إضافته إلى التعليمة السابقة من أجل عدم توليد ملف migration لأني لا أريد حفظ الرسائل التي يتم إرسالها ضمن قاعدة المعطيات.
-بعد تنفيذ التعليمة السابقة نقوم باستعراض محتوى `app/models/contact.rb` وحذف  الامتداد `< ApplicationRecord` وإضافة validations
+
+بعد تنفيذ التعليمة السابقة نقوم باستعراض محتوى `app/models/contact.rb` وحذف  
+الامتداد `< ApplicationRecord` وإضافة validations
 
 نقوم ايضا بتضمين كل من `ActiveModel::Validations` و `ActiveModel::Model`
 لكي يتم التعامل مع Contact كنموذج model واستخدام ميزة Validations 

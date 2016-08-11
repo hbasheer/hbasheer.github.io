@@ -11,7 +11,7 @@ category: DataBase
 date: 2016-04-18T03:08:22+03:00
 ---
 
-#### تنصيب postgresql حسب الإصدار الخاص به
+### تنصيب postgresql حسب الإصدار الخاص به
 1- تنصيب الإصدار 9.3  يتم عبر التعليمات التالية
 
     sudo apt-get update
@@ -55,7 +55,7 @@ sudo apt-get update
 sudo apt-get install postgresql-9.5 pgadmin3 postgresql-contrib libpq-dev
 ~~~
 
-#### إعداد postgresql
+### إعداد postgresql
 ينبغي لنا أن نفهم بعض الأشياء عن كيفية عمل postgresql
 
 1- **مستخدم postgresql الافتراضي**: 
@@ -70,7 +70,7 @@ PostgreSQL يتضمن sqlسطر الأوامرالمساعد لإدارة الق
 هناك واجهة بيانية تدعى pgadmin3 التعامل معها اسهل وتقوم بنفس مهام سطر الأوامر السابق.
 سوف نستخدم سطر الأوامر السابق لإنشاء مستخدم جديد وقاعدة البيانات ابتدائية
 
-#### إنشاء مستخدم آدمن Super User
+### إنشاء مستخدم آدمن Super User
 سنقوم بالولوج إلى حساب **postgres**  من خلال المستخدم الجذر الخاص بالنظام  بك ، ومن ثم نستخدم حساب **postgres**  لإنشاء حساب مستخدم جديد بصلاحية آدمن.
 
 * الولوج إلى المستخدم **postgres** :
@@ -114,8 +114,8 @@ CREATE DATABASE db_name WITH OWNER username;
 ~~~
 \connect test_db;
 ~~~
-#### استخدام pg ضمن تطبيق الريلز
 
+### استخدام pg ضمن تطبيق Rails
 * تنصيب الحزمة الخاصة بقاعدة البيانات
 
 ~~~
@@ -141,7 +141,7 @@ test:
   database: db_test
 ~~~
 
-#### كيفية عمل Backup & Restore
+### كيفية عمل Backup & Restore
 * Backup & Restore لقاعدة بيانات واحدة فقط
 
 

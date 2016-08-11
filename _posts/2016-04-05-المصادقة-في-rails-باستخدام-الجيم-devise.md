@@ -11,14 +11,6 @@ category: Rails
 date: 2016-04-05T01:53:56+03:00
 ---
 
-## ما سأتطرق له من خلال هذه التدوينة:
-
- 1. لمحة بسيطة عن devise
- 2. تثبيت devise ضمن تطبيق Rails تجريبي 
- 3. التعرف على إعدادات devise وفقا لعمل كل وحدة منه
- 4. تخصيص  devise وإضافة 
- 5. List item
-
 ### لمحة بسيطة عن devise
 devise هو أحد أشهر الجزم البرمجية(gem) التي تقدم حل متكامل للمصادقة(Authentication) ضمن تطبيقات Rails.
 إن أبرز ما يميز devise هو سهولة استخدام(عدة تعليمات برمجية ويتم تثبيته ضمن تطيق Rails وتشغيله) والدعم الكبير من قبل المجتمع الضخم من المطوريين الذي لا يزال يقدم تطويرات وإضافات مفيدة بشكل متزايد.
@@ -342,8 +334,6 @@ domain:               'heroku.com'
  
 سأحاول إن شاء الله من خلال تدوينة آخرى شرح بعض الإضافات التي تستخدم مع devise وكيفية استخدام الوحدة Omniauthable أيضا
 
-بالنهاية يمكنك الإطلاع على التطبيق التجريبي الذي تم إنشائه بنفس الخطوات السابقة مع إضافة ستايل (html+css)بسيط  https://devise_demo.herokuapp.com/
-وايضا على السورس كود ضمن [Github.][5] 
 
 
 
@@ -351,4 +341,4 @@ domain:               'heroku.com'
   [2]: https://www.heroku.com/
   [3]: https://github.com/plataformatec/devise/wikihttps://github.com/plataformatec/devise/wiki
   [4]: https://github.com/plataformatec/devise/wiki/How-Tos
-  [5]: http://Github.
+  
