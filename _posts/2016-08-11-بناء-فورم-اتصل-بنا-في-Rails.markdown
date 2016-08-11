@@ -1,0 +1,190 @@
+---
+title: بناء فورم اتصل بنا في Rails
+date: 2016-08-11T13:51:59+03:00
+layout: single
+author_profile: true
+header:
+  overlay_color: "#000"
+  overlay_filter: "0.4"
+  overlay_image: nature-grain.jpg
+tags: Validation
+category: Rails
+---
+
+### 1- إنشاء نموذج `Contact`
+
+~~~ruby
+rails g model contact --migration=false 
+~~~
+الخيار `--migration=false ` تم إضافته إلى التعليمة السابقة من أجل عدم توليد ملف migration لأني لا أريد حفظ الرسائل التي يتم إرسالها ضمن قاعدة المعطيات.
+بعد تنفيذ التعليمة السابقة نقوم باستعراض محتوى `app/models/contact.rb` وحذف  الامتداد `< ApplicationRecord` وإضافة validations
+
+نقوم ايضا بتضمين كل من `ActiveModel::Validations` و `ActiveModel::Model`
+لكي يتم التعامل مع Contact كنموذج model واستخدام ميزة Validations 
+
+~~~ruby
+class Contact
+
+	include ActiveModel::Model
+	include ActiveModel::Validations
+
+	attr_accessor :name, :email, :message
+
+	validates :name, :presence => {:message => "الاسم فارغ، يرجى ملء الحقل"}
+	validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i , :message => "البريد الالكتروني غير مقبول"
+	validates :message, :presence => {:message => "الرسالة فارغة، يرجى ملء الحقل"}
+
+end
+~~~
+
+### 2- Mail Class
+
+حاليا نريد إنشاء class خاص بفورم الاتصال لإرسال الرسائل ويتم ذلك عبر التعليمة التالية:
+
+~~~ruby
+rails g mailer ContactMailer
+~~~
+بعد تنفيذ التعليمة السابقة قم فتح الملف `contact_mailer.rb` الموجود ضمن المسار `app/mailers` وإضافة التابع new_contact
+
+~~~ruby
+class ContactMailer < ApplicationMailer
+
+  def new_contact(contact)
+  	@contact = contact
+    mail(to: "your.email@yourdomain.com",subject: "رسالة من #{contact.name}", from: "#{contact.name} <#{contact.email}>")
+  end
+  
+end
+~~~
+
+### 3- controller 
+
+~~~ruby
+class ContactsController < ApplicationController
+  def new
+    @contact = Contact.new
+  end
+
+  def create
+    @contact = Contact.new(contact_params)
+    
+    if @contact.valid?
+      ContactMailer.new_contact(@contact).deliver
+      redirect_to contact_path, notice: "تم إرسال الرسالة."
+    else
+      render :new
+    end
+  end
+
+private
+
+  def contact_params
+    params.require(:contact).permit(:name, :email, :message)
+  end
+
+end
+~~~
+
+
+
+### 4- Routes
+
+~~~ruby
+get '/contact', to: 'contacts#new', as: 'contact'
+post '/contact', to: 'contacts#create'
+~~~
+
+### 5- ملفات Views
+
+`app/views/contact_mailer/new_contact.html.erb`
+
+~~~ruby
+<div style="direction:rtl;text-align:right">
+	 المرسل : <%= @contact.name %>
+	 <br/>
+	 البريد الالكتروني: <%= @contact.email %>
+	 <br/>
+	 الرسالة:
+	 <br/>
+	<%= simple_format @contact.message %> 
+</div>
+~~~
+
+`app/views/contacts/new`
+
+~~~ruby
+<%= form_for @contact, url: contact_path,:html=>{class: 'form-horizontal',id:"contactForm"} do |f| %>
+       <% if @contact.errors.any? %>
+         <div id="error_explanation">
+           <ul>
+            <% @contact.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+          </ul>
+         </div>
+       <% end %>
+  <div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <div class="col-md-12">
+             <%= f.text_field :name,class: "form-control",placeholder:"الاسم الكامل",value: current_user ? current_user.name : "" %>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-12">
+        <div class="form-group">
+            <div class="col-md-12">
+                <%= f.text_field :email,class: "form-control",placeholder:"البريد الالكتروني",value: current_user ? current_user.email : "" %>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-lg-12">
+        <div class="form-group">
+            <div class="col-md-12">
+                <%= f.text_area :message,class: "form-control",placeholder: "تفاصيل الرسالة" %>          
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-12 ">
+                <%= f.submit "أرسل", :class=>"btn btn-primary" %>
+            </div>
+        </div>
+
+
+    </div>
+
+  </div>
+<% end %>
+~~~
+
+### 5- إعداد خادم البريد 
+
+يمكن وضع إعدادات عامة تعمل ضمن جميع البيئات (development - production)  
+من خلال وضع الكود التالي الذي يخبر action_mailer كيفية الاتصال بخادم البريد ضمن الملف `config/application.rb` 
+
+في هذا المثال استخدمت خادم google
+
+~~~ruby
+config.action_mailer.smtp_settings = {
+  address: "smtp.gmail.com",
+  port: 587,
+  domain: "<example.tld>",
+  user_name: "<username>",
+  password: "<password>",
+  authentication: :plain,
+  enable_starttls_auto: true
+}
+
+config.action_mailer.default_url_options = {
+  host: "yourdomain.tld"
+}
+~~~
+
+أو يمكن تخصيص الإعدادات السابقة ضمن كل بيئة من خلال إضافتها على كل ملف ضمن المجلد environments
