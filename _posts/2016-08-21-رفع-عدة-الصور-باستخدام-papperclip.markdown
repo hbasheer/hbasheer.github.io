@@ -1,5 +1,5 @@
 ---
-title: رفع عدة الصور باستخدام  papper clip
+title: رفع عدة الصور باستخدام  papperclip
 date: 2016-08-21T21:49:33+03:00
 layout: single
 author_profile: true
@@ -10,7 +10,7 @@ header:
 tags: paperclip
 category: Rails
 ---
-### رفع عدة الصور باستخدام  papper clip
+
 
 لنفرض لدينا تطبيق ذو البنية التالية:
 
