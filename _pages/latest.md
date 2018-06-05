@@ -1,6 +1,6 @@
 ---
 layout: archive
-permalink: /latest/
+permalink: /latest
 author_profile: true
 title: التدوينات الآخيرة
 header:
