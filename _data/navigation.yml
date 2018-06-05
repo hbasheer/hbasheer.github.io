@@ -2,4 +2,5 @@
 main:
   - title: "حول المدونة"
     url: http://hbasheer.github.io/about
-
+  - title: "التدوينات الآخيرة"
+    url: http://hbasheer.github.io/latest

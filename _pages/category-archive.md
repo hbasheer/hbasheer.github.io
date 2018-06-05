@@ -1,6 +1,6 @@
 ---
 layout: archive
-permalink: /
+permalink: /categories/
 author_profile: true
 title: التصنيفات
 header:
