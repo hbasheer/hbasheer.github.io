@@ -1,0 +1,175 @@
+---
+title: إنشاء صفحات ديناميكية في Rails
+date: 2016-07-25T15:43:44+03:00
+layout: single
+author_profile: true
+header:
+  overlay_color: "#000"
+  overlay_filter: "0.4"
+  overlay_image: "/assets/images/nature-grain.jpg"
+  show_overlay_excerpt: false
+tags: Pages
+category: Rails
+---
+
+
+### 1- إنشاء نموذج `model` باسم `page` بالحقول التالية:
+
+~~~ruby
+rails g model page title:string content:text slug:string keywords:string description:text published:boolean
+~~~
+
+
+### 2- إنشاء متحكم `controller ` باسم  `PageController` 
+
+وظيفة هذا المتحكم هو إظهار الصفحة للمستخدمين وفحصها في حال كانت غير منشورة وإظهار خطأ من نوع 404
+
+~~~ruby
+class PageController < ApplicationController
+  after_action  :check_page,only: [:show]	
+  def show
+  	@page = Page.find(params[:id])
+  end
+
+  private
+
+  def check_page
+  	@page = Page.find(params[:id])
+    unless @page.published? 
+        raise ActiveRecord::RecordNotFound
+    end
+  end
+
+end
+
+
+~~~
+
+### 3- إنشاء نموذج `model` باسم ` DynamicRouter` للتوجيه الديناميكي
+
+~~~ruby
+class DynamicRouter
+  def self.load
+    return nil unless ActiveRecord::Base.connection.table_exists? 'pages'
+    Rails.application.routes.draw do
+     Page.where(:published => true).each do |page|
+       get "/#{page.slug}", :to => "page#show", defaults: { id: page.id },as: page.url
+     end
+    end
+  end
+
+  def self.reload
+    Rails.application.routes_reloader.reload!
+  end
+end
+~~~
+
+### 4- إنشاء action ضمن نموذج `Page` لتحديث التوجيه بعد كل عملية تحديث 
+
+~~~ruby
+class Page < ActiveRecord::Base
+
+  after_save :reload_routes
+
+  def reload_routes
+    DynamicRouter.reload
+  end
+
+end
+~~~
+### 5- تضمين التوجيه الخاص بالصفحات ضمن ملف التوجيه `config/routes.rb` 
+
+
+~~~ruby
+Rails.application.routes.draw do
+	DynamicRouter.load
+	---
+	---
+end
+~~~
+
+### اخيرا إنشاء متحكم لعمليات CRUD الخاصة بالنموذج `pages`  
+هذا المتحكم يفضل ان يكون ضمن لوحة التحكم بحيث يتم تطبيق  authenticate وauthorization لعدم السماح لاي مستخدم عادي إجراء اي تعديلات على الصفحات 
+
+~~~ruby
+class Admin::PagesController < ApplicationController
+  before_filter :authenticate_user!
+  before_action :set_page, only: [:show, :edit, :update, :destroy]
+  # GET /admin/pages
+  # GET /admin/pages.json
+  def index
+    authorize Page
+    @pages = Page.all
+  end
+
+  # GET /admin/pages/1
+  # GET /admin/pages/1.json
+  def show
+    authorize @page
+  end
+
+  # GET /admin/pages/new
+  def new
+    @page = Page.new
+    authorize @page
+  end
+
+  # GET /admin/pages/1/edit
+  def edit
+    authorize @page
+  end
+
+  # POST /admin/pages
+  # POST /admin/pages.json
+  def create
+    @page = Page.new(page_params)
+    authorize  @page
+
+    respond_to do |format|
+      if @page.save
+        format.html { redirect_to admin_pages_url, notice: 'تم إضافة الصفحة بنجاح.' }
+        format.json { render action: 'show', status: :created, location: @page }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @page.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /admin/pages/1
+  # PATCH/PUT /admin/pages/1.json
+  def update
+    authorize @page
+    respond_to do |format|
+      if @page.update(page_params)
+        format.html { redirect_to :back, notice: 'تم التعديل بنجاح.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @page.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /admin/pages/1
+  # DELETE /admin/pages/1.json
+  def destroy
+    @page.destroy
+    respond_to do |format|
+      format.html { redirect_to admin_pages_url, notice: 'تم حذف الصفحة بنجاح.' }
+      format.json { head :no_content }
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_page
+      @page = Page.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def page_params
+      params.require(:page).permit(:title, :slug, :description, :keywords, :content, :published)
+    end
+end
+~~~

@@ -1,0 +1,324 @@
+---
+title: مقدمة عن  Rspec
+layout: single
+author_profile: true
+date: 2016-06-17T13:32:37+03:00
+header:
+  overlay_color: "#000"
+  overlay_filter: "0.4"
+  overlay_image: "/assets/images/nature-grain.jpg"
+  show_overlay_excerpt: false
+tags: Rspec
+category: Rails
+---
+
+### مقدمة عن  Rspec
+ لاحقا ...
+
+###  1- تنصيب `Rspec` على نظام التشفيل
+يتم تنصيب الإطار rspec عبر التعليمة التالية:
+
+~~~
+gem install rspec
+~~~
+
+
+### 2- استخدام `Rspec`  ضمن المشروع او الملفات المراد اختبارها
+لنفرض لدينا المجلد `demo` الذي يحتوي ملفات برمجية تقوم بوظيفية معنية والتي نريد اختبارها عبر `Rspec`
+بنية المجلد `demo` هي كالتالي:
+
+~~~bash
+|-- demo
+|   |-- lib
+|   |   |-- movie.rb
+
+~~~ 
+
+محتوى `movie.rb`
+
+~~~ruby
+class Movie
+	attr_accessor :name,:rank
+
+	def initialize(name,rank=0)
+		@name = name
+		@rank = rank
+	end
+
+	def show
+		puts "The name of Movie is #{@name} with rank #{@rank}" 
+	end
+
+	def like
+		@rank += 1
+		puts "I like this Movie. rank: #{@rank}"
+	end
+
+	def dislike
+	 	@rank -=1
+	 	puts "I hite this Movie. rank: #{@rank}"
+	end
+
+end
+
+~~~
+ضمن مسار المجلد السابق demo  ننفذ التعليمة التالية `rspec --init` لتوليد الملفات الضرورية لعمل rspec:
+
+~~~bash
+cd demo
+rspec --init
+~~~
+
+نتيجة التعليمة السابقة ستكون كالتالي:
+
+~~~
+create   .rspec
+create   spec/spec_helper.rb
+~~~
+
+1- الملف `spec_helper.rb`  ضمن المجلد **spec** يوجد به إعدادات الضرورية لعمل الإطار.  
+2- الملف `rspec.` : يوجد ضمنه التعليمات التي يتم تنفيذها بشكل افتراضي او الملفات التي يتم استدعائها بشكل دوري عند التنفيذ 
+
+### إنشاء ملف الاختبار 
+الهدف من استخدام rspec  هو اختبار صحة الكود المكتوب ضمن الملف `movie.rb`. ويتم ذلك بإنشاء ملف له نفس اسم الملف المراد اختباره `movie_spec.rb`
+
+~~~ruby
+require "spec_helper"
+require "movie"
+
+describe Movie do 
+	it "should name equal Bye" do
+		movie = Movie.new("Bye",2)
+		expect(movie.name).to eq("Bye")
+	end
+end
+~~~
+التعليمة الأولى: هي تضمين لملف الأعدادات `spec_helper.rb`
+التعليمة الثانية: هي تضمين لملف `movie.rb` المراد اختباره
+ 
+~~~bash
+|-- demo
+|   |-- lib
+|   |   |-- movie.rb
+|   |-- spec
+|   |   |-- lib
+|   |   |   |--movie_spec.rb
+|   |   |-- spec_helper.rb
+|   |-- .rspec
+~~~
+تنفيذ ملف الاختبار السابق يتم عبر التعليمة التالية:
+
+    rspec spec/lib/movie_spec.rb
+
+يمكننا إضافة الخيار `color --` لإظهار نتيجة الاختيار بلون مختلف
+والخيار `format doc--` لإظهار نتيجة بشكل هرمي 
+
+> الخيارات السابقة إذا أردت تنفيذها دائما عند كل عملية اختبار تضاف إلى الملف `.rspec` 
+
+`.rspec`
+
+~~~bash
+--color
+--format doc
+--require spec_helper
+~~~
+
+### التوابع /method الخاصة ب Rspec 
+البنية الاساسية ل rspec هي (`describe`/`it`).  
+تستخدم الكلمتين السابقتين للتعبير عن المفاهيم البرمجية كالمحادثة  
+فرضا لدينا تطبيق برمجي يحتوي على مستخدمين لديهم رصيد، عند تسجيل المستخدم حساب جديد يكون رصيده صفر
+نعبر عن المفهوم السابق بما يلي
+
+    Describe an account when it is first opened.
+    It has a balance of zero
+
+يسمى التعبير السابق ب السيناريو Scenarios ويكتب برمجيا بالصيغة التالية:
+
+~~~ruby
+describe "Describe an account when it is first opened" do
+  it "It has a balance of zero" do
+    user = User.new(:name "username",balance: 0)
+    expect(user.balance).to eq(0) 
+  end
+end
+~~~
+
+### توضيح بسيط لكل method
+
+1- **describe** / **content**:  
+التابعين السابقين متشابيهن من الناحية الوظيفية وويستخدمان لإنشاء مجموعة block من أمثلة الأختبار.  
+ الاختلاف بينما يكون فقط في السياق السيناريو  حيث الهدف من describe إنشاء مجموعة من الاختبارات مقابل وظيفة معينة أما  الهدف من content  نشاء مجموعة من الاختبارات مقابل وظيفة معينة التي لها نفس الحالة.
+المثال التالي سوف يوضح الفرق:
+
+~~~ruby
+describe "launch the rocket" do
+  before(:each) do
+    #prepare a rocket for all of the tests
+    @rocket = Rocket.new
+  end
+ 
+  context "all ready" do
+    before(:each) do
+      #under the state of ready
+      @rocket.ready = true
+    end
+ 
+    it "launch the rocket" do
+      @rocket.launch().should be_true
+    end
+  end
+ 
+  context "not ready" do
+    before(:each) do
+      #under the state of NOT ready
+      @rocket.ready = false
+    end
+ 
+    it "does not launch the rocket" do
+      @rocket.launch().should be_false
+    end
+  end
+end
+~~~ 
+
+
+
+وايضا يستخدم content في حالات مجوعات الأمثلة المتداخلة nested example groups
+
+2- **it** / **specify**:
+ايضا التابعين لهما نفس الوظيفة وهي التعبير / التصريح عن مثال الاختبار
+
+3- **before**
+يستخدم لتنفيذ block من التعليمات البرمجية قبل كل اختبار.  
+لديه خيارين:   
+1. before(:all) : ينفذ block من التعليمات البرمجية مرة واحدة قبل تشغيل جميع الأمثلة.
+2.  before(:each) : ينفذ block من التعليمات البرمجية مرة واحدة قبل تنفيذ كل مثال على .حدى  
+مثال :
+
+~~~ruby
+before(:all) do 
+  
+end
+
+#run before block
+it { ... }
+it { ... }
+it { ... }
+
+before(:each) do 
+  
+end
+# run before block
+it { ... }
+# run before block
+it { ... }
+# run before block
+it { ... }
+# run before blockk
+it { ... }
+
+~~~
+
+أفضل استخدام  `before` يكون مع `content`.  
+- content :  إنشاء مجموعة من الاختبارات مقابل وظيفة معينة التي لها نفس الحالة.  
+- before : إنشاء قائمة من action  للحصول على حالة معينة.  
+
+4- **let**:
+تشبه before إلا أنها تتصف بأنها كسولة lazily  اي ان block البرمجي لا يتم تنفيذه إلى عندما يتم استدعائه
+
+مثال:
+
+~~~ ruby
+let(:post) { Post.new(title: "title",published: true)}
+it {  exprct (post.published).to be_true   } // تم استدعاء post
+~~~
+
+5- **subject**:  
+يستخدم لتعيين شيء معين لاختباره.
+يفضل استخدامه مع describe
+~~~ruby
+
+6- **let مع subject**
+
+~~~ruby
+require 'spec_helper'
+
+describe Card do
+  subject do
+    Card.new(card_type)
+  end
+  
+  describe "#value" do  
+    context "Two of Hearts" do
+      let(:card_type) { "2H" }
+      its(:value) { should == 2 }
+    end
+  
+    describe "Face Cards" do  
+    
+      context "King of Clubs" do
+        let(:card_type) { "KC" }
+        its(:value) { should == 13 }
+      end
+  
+      context "Queen of Clubs" do
+        let(:card_type) { "QC" }
+        its(:value) { should == 12 }
+      end
+
+      context "Jack of Hearts" do
+        let(:card_type) { "JH" }
+        its(:value) { should == 11 }
+      end
+    end
+    
+    context "Bad Value" do
+      it "should raise StandardError" do
+        expect { card = Card.new("ZZ") }.to raise_error(StandardError)
+      end
+    end
+  end
+end
+
+~~~
+
+### الرموز الخاصة بالتوقع (expectations syntaxes)
+
+يستخدم Rspec كل من `should` و  `expect` بشكل افتراضي.
+
+> لا فرق بينما إلا بطريقة الاستخدام.
+
+فيما يلي أمثلة على استخدام كل منها :
+
+~~~ruby
+3.should eq(3)   <=> expect(3).to eq(3)
+3.should_not eq(4) <=> expect(3).not_to eq(4)
+actual.should be_true <=> expect(actual).to be_true
+5.should be > 4 <=> expect(5).to be >  4
+[1, 2, 3].should  include(1) <=> expect([1, 2, 3]).to  include(1)
+actual.should  match(/expression/) <=> expect(actual).to match(/expression/)
+...
+~~~
+
+تسمى كل من`eq`, `be_true`,  `include`, `be >  4` , `match`  ضمن الأمثلة السابقة ب `matchers`
+يمكن الإطلاع على تفصيل أكثر عنها (وظيفتها وطريقة استخدامها) من خلال التوثيق [Built in matchers](https://www.relishapp.com/rspec/rspec-expectations/v/3-4/docs/built-in-matchers).
+
+### تفعيل/تعطيل كل من `should` و  `expect`
+
+ يتم عبر configure تفعيل او تعطيل كل من `should` و  `expect` كما يلي:
+
+~~~ruby
+RSpec.configure do |config|
+  config.expect_with :rspec do |c|
+    c.syntax = :expect             # disables `should`
+    # or
+    c.syntax = :should             # disables `expect`
+    # or
+    c.syntax = [:should, :expect]  # default, enables both `should` and `expect`
+  end
+end
+~~~
+
+### خاتمة
+الشرح السابق هو شرح مبسط على الإطار Rspec واستخدامه بشكل عام.  
+سوف أقوم بكتابة مقالة آخرى إن شاء الله تبين طريقة استخدام الإطار ضمن مشروع Rails بالتفصيل. 

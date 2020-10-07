@@ -1,0 +1,58 @@
+---
+title: تنصيب React.js ضمن Ubuntu
+date: 2018-05-29T15:02:30+03:00
+layout: single
+author_profile: true
+header:
+  overlay_color: "#000"
+  overlay_filter: "0.4"
+  overlay_image: "/assets/images/nature-grain.jpg"
+  show_overlay_excerpt: false
+tags: JS
+category: React.js
+--- 
+
+## تنصيب React.js ضمن Ubuntu
+
+لتنصيب او استخدام react نحتاج الى امرين:
+1. node.js
+2. yarn او npm (أفضل yarn)
+
+يتم تنصيب  Node.js عبر التعليمة التالية
+
+```
+sudo apt-get install -y nodejs
+```
+
+اما yarn فيتم تنصيبه من خلال التعلميات الموجودة ضمن الرابط التالي [yarn Installation](https://yarnpkg.com/lang/en/docs/install/#debian-stable) 
+
+بعد الانتهاء من تنصيب yarn و node نحتاج تنصيب الحزمة ` create-react-app
+`
+التي سوف نستخدمها لإنشاء تطبيق react عبر التعليمة التالية
+```
+yarn global add create-react-app
+```
+الان اصبح بالإمكان إنشاء تطبيق react جديد بسهولة من خلال التعليمة التالية
+
+```
+create-react-app my-react-app
+```
+> `my-react-app` هو اسم التطبيق 
+
+الان يمكنك الدخول الى التطبيق التي تم إنشائه و تشغيل السيرفر المحلي لمعاينته من خلال المتصفح
+
+```
+cd my-react-app
+yarn start
+```
+
+
+### تحديث 
+قد تواجهك هذه المشكلة عند تطبيق التعليمة السابقة 
+```
+create-react-app: command not found
+```
+بعد البحث وجدت حلها بتطبيق التعليمة التالية 
+```
+export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
+```

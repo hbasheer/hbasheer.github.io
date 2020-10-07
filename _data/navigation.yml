@@ -1,0 +1,12 @@
+# main links
+main:
+  - title: "حول الكاتب"
+    url: "/about"
+  - title: "التصنيفات"
+    url: /categories
+  # - title: "Sample Posts"
+  #   url: /year-archive/
+  # - title: "Sample Collections"
+  #   url: /collection-archive/
+  # - title: "Sitemap"
+  #   url: /sitemap/
