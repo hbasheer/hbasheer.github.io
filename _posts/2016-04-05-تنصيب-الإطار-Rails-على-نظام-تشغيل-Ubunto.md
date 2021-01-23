@@ -5,7 +5,8 @@ author_profile: true
 header:
   overlay_color: "#000"
   overlay_filter: "0.4"
-  overlay_image: nature-grain.jpg
+  overlay_image: "/assets/images/nature-grain.jpg"
+  show_overlay_excerpt: false
 tags: Ubunto
 category: Rails
 date: 2016-04-05T00:47:26+03:00
